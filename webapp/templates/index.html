@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="text-center">Vikings Table</h1>
+
+    <div id="filter-container" class="container mt-4 rounded p-3 mb-5 bg-white rounded border">
+        <form id="filter-form" action="#" method="POST">
+            <div class="row">
+                <div class="col-md-4">
+                    {% if form_state['search'] %}
+                        <input type="text" id="search" onkeyup="searchFunction()" placeholder="Search.." class="form-control" name="search" value="{{ form_state['search'] }}">
+                    {% else %}
+                        <input type="text" id="search" onkeyup="searchFunction()" placeholder="Search.." class="form-control" name="search">
+                    {% endif %}
+                </div>
+                <div class="col-md-4">
+                    <select id="sort" class="form-control" name="sort">
+                        <option value="">Sort by...</option>
+                        {% if form_state['sort'] == 'name' %}
+                            <option value="name" selected>Character First Name</option>
+                        {% else %}
+                            <option value="name">Character First Name</option>
+                        {% endif %}
+                        {% if form_state['sort'] == 'actor' %}
+                            <option value="actor" selected>Actor First Name</option>
+                        {% else %}
+                            <option value="actor">Actor First Name</option>
+                        {% endif %}
+                        {% if form_state['sort'] == 'tv-show' %}
+                            <option value="tv-show" selected>TV Show</option>
+                        {% else %}
+                            <option value="tv-show">TV Show</option>
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select id="tvshow" class="form-control" name="tvshow">
+                        <option value="">Tv Show</option>
+                        {% if form_state['tvshow'] == 'Vikings' %}
+                            <option value="Vikings" selected>Vikings</option>
+                        {% else %}
+                            <option value="Vikings">Vikings</option>
+                        {% endif %}
+                        {% if form_state['tvshow'] == 'Norsemen' %}
+                            <option value="Norsemen" selected>Norsemen</option>
+                        {% else %}
+                            <option value="Norsemen">Norsemen</option>
+                        {% endif %}
+                        {% if form_state['tvshow'] == 'All' %}
+                            <option value="All" selected>All</option>
+                        {% else %}
+                            <option value="All">All</option>
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-4">
+                    <h5>Table Resources</h5>
+                    <div class="form-check">
+                        {% if form_state['group1-option1'] %}
+                            <input class="form-check-input" type="checkbox" value="group1-option1" id="group1-option1" name="group1-option1" checked>
+                        {% else %}
+                            <input class="form-check-input" type="checkbox" value="group1-option1" id="group1-option1" name="group1-option1">
+                        {% endif %}
+                        <label class="form-check-label" for="group1-option1">
+                            Character Has Last Name
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h5>Character Page Resources</h5>
+                    <div class="form-check">
+                        {% if form_state['group2-option1'] %}
+                            <input class="form-check-input" type="checkbox" value="group2-option1" id="group2-option1" name="group2-option1" checked>
+                        {% else %}
+                            <input class="form-check-input" type="checkbox" value="group2-option1" id="group2-option1" name="group2-option1">
+                        {% endif %}
+                        <label class="form-check-label" for="group2-option1">
+                            Character Has Description
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        {% if form_state['group2-option2'] %}
+                            <input class="form-check-input" type="checkbox" value="group2-option2" id="group2-option2" name="group2-option2" checked>
+                        {% else %}
+                            <input class="form-check-input" type="checkbox" value="group2-option2" id="group2-option2" name="group2-option2">
+                        {% endif %}
+                        <label class="form-check-label" for="group2-option2">
+                            Actor Has Description
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        {% if form_state['group2-option3'] %}
+                            <input class="form-check-input" type="checkbox" value="group2-option3" id="group2-option3" name="group2-option3" checked>
+                        {% else %}
+                            <input class="form-check-input" type="checkbox" value="group2-option3" id="group2-option3" name="group2-option3">
+                        {% endif %}
+                        <label class="form-check-label" for="group2-option3">
+                            Character Has Image
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col text-right">
+                    <a href="{{ url_for('views.index') }}" class="btn btn-secondary">Clear Filters</a>
+                    <button type="submit" class="btn btn-secondary">Filter</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">CharacterFirstName</th>
+                <th scope="col">CharacterLastName</th>
+                <th scope="col">TvShow</th>
+                <th scope="col">ActorFirstName</th>
+                <th scope="col">ActorLastName</th>
+            </tr>
+        </thead>
+        <tbody id="myTable">
+            {% for character, actor in table %}
+            <tr class="clickable-row">
+                <td>{{ loop.index }}</td>
+                <td>{{ character.firstname }}</td>
+                <td>{{ character.lastname }}</td>
+                <td>{{ character.tvshow }}</td>
+                <td>{{ actor.firstname }}</td>
+                <td>{{ actor.lastname }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

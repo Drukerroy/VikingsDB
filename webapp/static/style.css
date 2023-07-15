@@ -1,0 +1,10 @@
+.container {
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.clickable-row:hover {
+        cursor: pointer;
+}

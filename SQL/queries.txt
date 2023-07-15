@@ -1,0 +1,27 @@
+-- Create the enum type
+CREATE TYPE tv_show AS ENUM ('Vikings', 'Norsemen');
+
+-- Create the Actor table with a unique constraint on FirstName and LastName
+CREATE TABLE Actor (
+  ActorID SERIAL PRIMARY KEY,
+  FirstName VARCHAR(50) NOT NULL,
+  LastName VARCHAR(50),
+  Description TEXT,
+  -- Add a unique constraint on FirstName and LastName columns
+  CONSTRAINT uk_actor_name UNIQUE (FirstName, LastName)
+);
+
+-- Create the Character table with a unique constraint on FirstName, LastName, and TvShow
+CREATE TABLE Character (
+  CharacterID SERIAL PRIMARY KEY,
+  FirstName VARCHAR(50) NOT NULL,
+  LastName VARCHAR(50),
+  Description TEXT,
+  TvShow tv_show NOT NULL,
+  ImageSrc TEXT,
+  ActorID INTEGER,
+  FOREIGN KEY (ActorID) REFERENCES Actor (ActorID),
+  -- Add a unique constraint on FirstName, LastName, and TvShow columns
+  CONSTRAINT uk_character_name_show UNIQUE (FirstName, TvShow),
+  CONSTRAINT uk_character_actor_id UNIQUE (ActorID)
+);

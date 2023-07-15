@@ -1,42 +1,81 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import or_
 
 
-class VikingsQueries:
+class VikingsDBConnector:
     def __init__(self):
         self.db = SQLAlchemy()
+        self.actor = ''
+        self.character = ''
 
-    def get_joined_table(self):
-        pass
-
-    def update_results(self):
-        pass
-
-    def insert_entities(self, data):
-        print('here')
+    def get_joined_tables(self):
         from webapp.models.Actor import Actor
         from webapp.models.Character import Character
+        self.actor = Actor
+        self.character = Character
 
-        for tv_show, cast in data.items():
-            for character_name, info in cast.items():
+        joined_table = self.db.session.query(Character, Actor).join(Actor).all()
 
-                # Create an actor instance
-                new_actor = Actor(
-                    first_name=info['Actor Name'].split(' ', 1)[0] if ' ' in info['Actor Name'] else info['Actor Name'],
-                    last_name=info['Actor Name'].split(' ', 1)[1] if ' ' in info['Actor Name'] else None,
-                    description=info['Actor Description'] if 'Actor Description' in info.keys() else None
+        return joined_table
+
+    def get_filtered_data(self, search_query, sort_option, category_option,
+                          character_has_last_name, character_has_description,
+                          actor_has_description, character_has_image):
+        query = self.db.session.query(self.character, self.actor).join(self.actor)
+
+        # Apply filtering based on the form data
+
+        # Search query
+        if search_query:
+            query = query.filter(
+                or_(
+                    self.character.firstname.ilike(f"%{search_query}%"),
+                    self.character.lastname.ilike(f"%{search_query}%"),
+                    self.actor.firstname.ilike(f"%{search_query}%"),
+                    self.actor.lastname.ilike(f"%{search_query}%")
                 )
-                self.db.session.add(new_actor)
+            )
 
-                # Create a character instance
-                new_character = Character(first_name=character_name.split(' ', 1)[0] if ' ' in character_name else character_name,
-                                          last_name=character_name.split(' ', 1)[0] if ' ' in character_name else None,
-                                          description=info['Character Description'] if 'Character Description' in info.keys() else None,
-                                          tv_show=info['TV Show'],
-                                          image_src=info['Image URL'] if 'Image URL' in info.keys() else None,
-                                          actor=new_actor)
-                self.db.session.add(new_character)
+        # Sort option
+        if sort_option == "name":
+            query = query.order_by(self.character.firstname, self.character.lastname)
+        elif sort_option == "actor":
+            query = query.order_by(self.actor.firstname, self.actor.lastname)
+        elif sort_option == "tv-show":
+            query = query.order_by(self.character.tvshow.desc())
 
-                self.db.session.commit()
+        # Category option
+        if category_option and category_option != "All":
+            query = query.filter(self.character.tvshow == category_option)
+
+        # Character has last name
+        if character_has_last_name:
+            query = query.filter(self.character.lastname != None)
+
+        # Character has description
+        if character_has_description:
+            query = query.filter(self.character.description != None)
+
+        # Actor has description
+        if actor_has_description:
+            query = query.filter(self.actor.description != None)
+
+        # Character has image
+        if character_has_image:
+            query = query.filter(self.character.imagesrc != None)
+
+        filtered_data = query.all()
+
+        return filtered_data
+
+    def get_character_page_info(self, character_first_name, actor_first_name, tv_show):
+        joined_table = self.db.session.query(self.character, self.actor).join(self.actor).filter(
+            self.character.firstname == character_first_name,
+            self.actor.firstname == actor_first_name,
+            self.character.tvshow == str(tv_show)
+        ).all()
+
+        return joined_table
 
 
-vikings_db = VikingsQueries()
+vikings_db = VikingsDBConnector()

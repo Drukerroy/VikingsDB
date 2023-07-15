@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Character Page{% endblock %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-start">
+            <div class="col-md-1">
+                <button id="back-button" class="btn btn-secondary">Back</button>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                <img src="{{ data['Image Src'] }}" class="rounded" alt="Character Image" style="width: 300px; height: 300px; object-fit: cover;">
+            </div>
+        </div>
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-6">
+                <h2 class="text-center">{{ data['Character Name'] }}</h2>
+                {% if data['Character Description'] %}
+                <p class="text-center">{{ data['Character Description'] }}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-6">
+                <h2 class="text-center">{{ data['Actor Name'] }}</h2>
+                {% if data['Actor Description'] %}
+                <p class="text-center">{{ data['Actor Description'] }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

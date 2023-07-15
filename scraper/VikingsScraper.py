@@ -8,6 +8,16 @@ class VikingsScraper:
     def __init__(self):
         self.vikings_cast_info = {}
         self.norsemen_cast_info = {}
+        self.merged_cast_info = {}
+
+    def scrape_all_data(self):
+        self.scrape_vikings_cast()
+        self.scrape_norsemen_cast()
+        self.merged_cast_info = {
+            'vikings_cast': self.vikings_cast_info,
+            'norsemen_cast': self.norsemen_cast_info
+        }
+        return self.merged_cast_info
 
     def scrape_vikings_cast(self):
         base_url = 'https://www.history.com'
@@ -46,7 +56,8 @@ class VikingsScraper:
                 'Actor Name': actor_name,
                 'Character Description': character_description,
                 'Actor Description': actor_description,
-                'Image URL': cast_links_images_dict[link]
+                'Image URL': cast_links_images_dict[link],
+                'TV Show': 'Vikings'
             }
 
     def scrape_norsemen_cast(self):
@@ -67,7 +78,8 @@ class VikingsScraper:
             character_name, character_description = character_info.split(', ', 1)
             self.norsemen_cast_info[character_name] = {
                 'Character Description': character_description.capitalize(),
-                'Actor Name': actor_name
+                'Actor Name': actor_name,
+                'TV Show': 'Norsemen'
             }
 
     def scrape_norsemen_imdb(self):
@@ -96,7 +108,8 @@ class VikingsScraper:
                 character_name = character_link.text.strip()
 
                 character_dict = {
-                    'Actor Name': actor_name
+                    'Actor Name': actor_name,
+                    'TV Show': 'Norsemen'
                 }
 
                 self.norsemen_cast_info[character_name] = character_dict if \
