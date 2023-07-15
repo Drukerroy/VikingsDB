@@ -37,7 +37,7 @@ class VikingsScraper:
             character_name = article.find('header').find('h1').find('strong').text.strip()
 
             actor_info = article.find('header').find('h1').find('small').text.strip()
-            actor_name = ' '.join(actor_info.split()[2:])  # Remove "Played by" from the actor name
+            actor_name = ' '.join(actor_info.split()[2:])
 
             character_description = article.find('p').text.strip()
 
