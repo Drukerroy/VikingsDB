@@ -1,6 +1,6 @@
 # VikingsDB
 
-VikingsDB is a Flask application that allows you to display and analyze data related to Viking characters and actors from the popular TV show "Vikings".
+VikingsDB is a Flask application that allows you to display and analyze data related to Viking characters and actors from the popular TV shows "Vikings" and "Norsemen".
 
 ## Prerequisites
 
