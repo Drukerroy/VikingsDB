@@ -5,8 +5,6 @@ import pandas as pd
 
 class VikingsDBScraperConnector():
     def __init__(self):
-        # 'postgresql://vikingsdatabase_user:ehYdAjcULaUASBTNLJ1iOx1tkqRvAR4Q@dpg-ciohtolph6elhbt6oru0-a.ohio-postgres.render.com/vikingsdatabase'
-        # 'postgres://vikingsdatabase_user:ehYdAjcULaUASBTNLJ1iOx1tkqRvAR4Q@dpg-ciohtolph6elhbt6oru0-a/vikingsdatabase'
         self.conn = psycopg2.connect(
             host='dpg-ciohtolph6elhbt6oru0-a',
             dbname='vikingsdatabase',
@@ -38,7 +36,6 @@ class VikingsDBScraperConnector():
                     data_list.append([character_first_name, character_last_name, character_description, character_image,
                                       actor_first_name, actor_last_name, actor_description, tv_show])
 
-                    # Insert or update actor
                     actor_query = """
                         INSERT INTO actor (firstname, lastname, description)
                         VALUES (%s, %s, %s)
@@ -49,7 +46,6 @@ class VikingsDBScraperConnector():
                     cursor.execute(actor_query, (actor_first_name, actor_last_name, actor_description))
                     actor_id = cursor.fetchone()[0]
 
-                    # Insert or update character
                     character_query = """
                         INSERT INTO character (firstname, lastname, description, imagesrc, tvshow, actorid)
                         VALUES (%s, %s, %s, %s, %s, %s)

@@ -23,9 +23,6 @@ class VikingsDBConnector:
                           actor_has_description, character_has_image):
         query = self.db.session.query(self.character, self.actor).join(self.actor)
 
-        # Apply filtering based on the form data
-
-        # Search query
         if search_query:
             query = query.filter(
                 or_(
@@ -36,7 +33,6 @@ class VikingsDBConnector:
                 )
             )
 
-        # Sort option
         if sort_option == "name":
             query = query.order_by(self.character.firstname, self.character.lastname)
         elif sort_option == "actor":
@@ -44,23 +40,18 @@ class VikingsDBConnector:
         elif sort_option == "tv-show":
             query = query.order_by(self.character.tvshow.desc())
 
-        # Category option
         if category_option and category_option != "All":
             query = query.filter(self.character.tvshow == category_option)
 
-        # Character has last name
         if character_has_last_name:
             query = query.filter(self.character.lastname != None)
 
-        # Character has description
         if character_has_description:
             query = query.filter(self.character.description != None)
 
-        # Actor has description
         if actor_has_description:
             query = query.filter(self.actor.description != None)
 
-        # Character has image
         if character_has_image:
             query = query.filter(self.character.imagesrc != None)
 

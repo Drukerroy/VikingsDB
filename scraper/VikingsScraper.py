@@ -32,20 +32,15 @@ class VikingsScraper:
             response = requests.get(link)
             soup = BeautifulSoup(response.text, 'html.parser')
 
-            # Get character name, actor name and description from the article tag
             article = soup.find('article', class_='main-article')
 
-            # Get character name
             character_name = article.find('header').find('h1').find('strong').text.strip()
 
-            # Get actor name
             actor_info = article.find('header').find('h1').find('small').text.strip()
             actor_name = ' '.join(actor_info.split()[2:])  # Remove "Played by" from the actor name
 
-            # Get character description
             character_description = article.find('p').text.strip()
 
-            # Get actor description
             try:
                 actor_description = '\n'.join([p.text.strip() for p in article.find('div', class_='page').find_all('p')])
             except:
@@ -65,7 +60,7 @@ class VikingsScraper:
         self.scrape_norsemen_imdb()
 
     def scrape_norsemen_cast_wikipedia(self):
-        url = 'https://en.wikipedia.org/wiki/Norsemen_(TV_series)'  # Replace with your actual URL
+        url = 'https://en.wikipedia.org/wiki/Norsemen_(TV_series)'
         response = requests.get(url)
         tree = html.fromstring(response.content)
 
@@ -91,18 +86,16 @@ class VikingsScraper:
         table = soup.find('table', class_='cast_list')
         rows = table.find_all('tr')
 
-        for row in rows[1:]:  # Skip the header row
+        for row in rows[1:]:
             cols = row.find_all('td')
             if len(cols) < 4:
                 continue
 
-            # Get the URL and content from the second td tag
             try:
                 actor_link = cols[1].find('a')
                 actor_page_url = base_url + actor_link['href']
                 actor_name = actor_link.text.strip()
 
-                # Get the URL and content from the fourth td tag
                 character_link = cols[3].find('a')
                 character_page_url = base_url + character_link['href']
                 character_name = character_link.text.strip()
