@@ -52,8 +52,12 @@ class VikingsDBScraperConnector():
                     character_query = """
                         INSERT INTO character (firstname, lastname, description, imagesrc, tvshow, actorid)
                         VALUES (%s, %s, %s, %s, %s, %s)
-                        ON CONFLICT (firstname, lastname, tvshow)
-                        DO UPDATE SET description = EXCLUDED.description, imagesrc = EXCLUDED.imagesrc, actorid = EXCLUDED.actorid
+                        ON CONFLICT (actorid) DO UPDATE
+                        SET firstname = EXCLUDED.firstname,
+                            lastname = EXCLUDED.lastname,
+                            description = EXCLUDED.description,
+                            imagesrc = EXCLUDED.imagesrc,
+                            tvshow = EXCLUDED.tvshow
                         RETURNING characterid
                     """
                     cursor.execute(character_query, (character_first_name, character_last_name, character_description, character_image, tv_show, actor_id))

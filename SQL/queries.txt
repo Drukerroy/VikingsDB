@@ -22,6 +22,5 @@ CREATE TABLE Character (
   ActorID INTEGER,
   FOREIGN KEY (ActorID) REFERENCES Actor (ActorID),
   -- Add a unique constraint on FirstName, LastName, and TvShow columns
-  CONSTRAINT uk_character_name_show UNIQUE (FirstName, TvShow),
   CONSTRAINT uk_character_actor_id UNIQUE (ActorID)
 );
