@@ -6,8 +6,9 @@ import pandas as pd
 class VikingsDBScraperConnector():
     def __init__(self):
         # 'postgresql://vikingsdatabase_user:ehYdAjcULaUASBTNLJ1iOx1tkqRvAR4Q@dpg-ciohtolph6elhbt6oru0-a.ohio-postgres.render.com/vikingsdatabase'
+        # 'postgres://vikingsdatabase_user:ehYdAjcULaUASBTNLJ1iOx1tkqRvAR4Q@dpg-ciohtolph6elhbt6oru0-a/vikingsdatabase'
         self.conn = psycopg2.connect(
-            host='dpg-ciohtolph6elhbt6oru0-a.ohio-postgres.render.com',
+            host='dpg-ciohtolph6elhbt6oru0-a',
             dbname='vikingsdatabase',
             user='vikingsdatabase_user',
             password='ehYdAjcULaUASBTNLJ1iOx1tkqRvAR4Q',
