@@ -14,10 +14,7 @@ VikingsDB is a Flask application that allows you to display and analyze data rel
 Clone the repository to your local machine using the following command and download the requirement file:
 
 ```bash
-git clone git clone https://github.com/your-username/VikingsDB.git
-
-cd VikingsDB
-pip install -r requirements.txt
+git clone git clone https://github.com/Drukerroy/VikingsDB.git
 
 cd VikingsDB
 pip install -r requirements.txt
